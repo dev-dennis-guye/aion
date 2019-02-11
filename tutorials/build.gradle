@@ -1,0 +1,9 @@
+ext.moduleName = 'aion.tutorials'
+
+dependencies {
+    compile project(':modAionBase')
+    compile project(':aion_api')
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'pl.pragmatists:JUnitParams:1.1.1'
+}
