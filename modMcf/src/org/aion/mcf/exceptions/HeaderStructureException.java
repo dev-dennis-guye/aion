@@ -1,4 +1,4 @@
-package org.aion.zero.exceptions;
+package org.aion.mcf.exceptions;
 
 /**
  * Denotes an exception occuring because a field in the header structure was ruled to be invalid.
@@ -19,7 +19,7 @@ public class HeaderStructureException extends Exception {
 
     /**
      * @param field name of the field
-     * @param offset offset of the field refer to {@link org.aion.zero.types.A0BlockHeader}
+     * @param offset offset of the field refer to {@link org.aion.mcf.types.AbstractBlockHeader}
      */
     public HeaderStructureException(String field, int offset, String message) {
         super(String.format("HeaderStructure field: %s/%d violated, %s", field, offset, message));

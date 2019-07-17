@@ -56,5 +56,5 @@ public interface BlockHeader {
 
     long getEnergyLimit();
     
-    byte getVersion();
+    byte getSealType();
 }

@@ -13,5 +13,4 @@ module aion.zero {
 
     exports org.aion.zero.api;
     exports org.aion.zero.types;
-    exports org.aion.zero.exceptions;
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.aion.mcf.blockchain.valid.IValidRule;
 import org.aion.zero.api.BlockConstants;
-import org.aion.zero.exceptions.HeaderStructureException;
+import org.aion.mcf.exceptions.HeaderStructureException;
 import org.aion.zero.types.A0BlockHeader;
 import org.junit.Test;
 

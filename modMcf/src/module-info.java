@@ -12,6 +12,7 @@ module aion.mcf {
     requires core;
     requires aion.types;
     requires aion.base;
+    requires org.json;
 
     exports org.aion.mcf.account;
     exports org.aion.mcf.blockchain;
@@ -28,6 +29,7 @@ module aion.mcf {
     exports org.aion.mcf.trie;
     exports org.aion.mcf.tx;
     exports org.aion.mcf.types;
+    exports org.aion.mcf.exceptions;
     exports org.aion.mcf.valid;
     exports org.aion.mcf.vm;
     exports org.aion.mcf.vm.types;
