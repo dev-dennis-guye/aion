@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.aion.mcf.blockchain.BlockHeader;
 import org.aion.mcf.blockchain.valid.BlockHeaderRule;
-import org.aion.zero.types.A0BlockHeader;
 
 public class AionExtraDataRule extends BlockHeaderRule {
 
@@ -18,7 +17,8 @@ public class AionExtraDataRule extends BlockHeaderRule {
     }
 
     @Override
-    public boolean validate(BlockHeader header, List<RuleError> errors) {
+    public boolean validate(
+            BlockHeader header, List<RuleError> errors, Object... extraValidationArg) {
         if (header.getExtraData() != null
                 && header.getExtraData().length > this.maximumExtraDataSize) {
             addError(

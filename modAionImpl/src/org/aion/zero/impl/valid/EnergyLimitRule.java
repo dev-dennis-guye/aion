@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.aion.mcf.blockchain.BlockHeader;
 import org.aion.mcf.valid.DependentBlockHeaderRule;
-import org.aion.zero.types.A0BlockHeader;
 
 /**
  * Energy limit rule is defined as the following (no documentation yet)
@@ -25,7 +24,7 @@ public class EnergyLimitRule extends DependentBlockHeaderRule {
     }
 
     @Override
-    public boolean validate(BlockHeader header, BlockHeader parent, List<RuleError> errors) {
+    public boolean validate(BlockHeader header, BlockHeader parent, List<RuleError> errors, Object... extraValidationArg) {
         long energyLimit = header.getEnergyLimit();
         long parentEnergyLimit = parent.getEnergyLimit();
         long parentEnergyQuotient = parentEnergyLimit / this.energyLimitDivisor;

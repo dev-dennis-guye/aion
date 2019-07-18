@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.aion.mcf.blockchain.BlockHeader;
 import org.aion.mcf.blockchain.valid.BlockHeaderRule;
-import org.aion.zero.types.A0BlockHeader;
 
 /**
  * Rule for checking that energyConsumed does not exceed energyLimit:
@@ -13,7 +12,8 @@ import org.aion.zero.types.A0BlockHeader;
 public class EnergyConsumedRule extends BlockHeaderRule {
 
     @Override
-    public boolean validate(BlockHeader blockHeader, List<RuleError> error) {
+    public boolean validate(
+            BlockHeader blockHeader, List<RuleError> error, Object... extraValidationArg) {
         if (blockHeader.getEnergyConsumed() > blockHeader.getEnergyLimit()) {
             addError(
                     formatError(blockHeader.getEnergyConsumed(), blockHeader.getEnergyLimit()),
