@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.aion.base.AionTransaction;
-import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.blockchain.BlockHeader;
 import org.aion.mcf.trie.Trie;
 import org.aion.mcf.trie.TrieImpl;
@@ -21,7 +20,8 @@ import org.aion.mcf.exceptions.HeaderStructureException;
 import org.aion.zero.types.A0BlockHeader;
 
 /** */
-public class AionBlock extends AbstractBlock implements Block {
+//TODO: [Unity] Rename this to MinedBlock
+public class AionBlock extends AbstractBlock {
 
     /* Private */
     private byte[] rlpEncoded;
