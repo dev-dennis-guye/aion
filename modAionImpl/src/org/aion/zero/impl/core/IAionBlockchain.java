@@ -8,10 +8,9 @@ import org.aion.mcf.core.IBlockchain;
 import org.aion.mcf.db.Repository;
 import org.aion.util.types.ByteArrayWrapper;
 import org.aion.zero.impl.BlockContext;
+import org.aion.zero.impl.blockchain.StakingContractHelper;
 import org.aion.zero.impl.sync.DatabaseType;
-import org.aion.zero.impl.types.AionBlock;
 import org.aion.zero.impl.types.AionTxInfo;
-import org.aion.zero.types.A0BlockHeader;
 import org.aion.zero.types.AionTxReceipt;
 
 /** aion blockchain interface. */
@@ -20,6 +19,9 @@ public interface IAionBlockchain
 
     Block createNewBlock(
             Block parent, List<AionTransaction> transactions, boolean waitUntilBlockTime);
+
+    Block createNewBlock(
+        Block parent, List<AionTransaction> transactions, byte[] seed);
 
     BlockContext createNewBlockContext(
             Block parent, List<AionTransaction> transactions, boolean waitUntilBlockTime);
@@ -90,4 +92,6 @@ public interface IAionBlockchain
      */
     Map<ByteArrayWrapper, byte[]> getReferencedTrieNodes(
             byte[] value, int limit, DatabaseType dbType);
+
+    StakingContractHelper getStakingContractHelper();
 }

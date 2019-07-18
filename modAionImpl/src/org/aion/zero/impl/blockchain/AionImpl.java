@@ -29,7 +29,6 @@ import org.aion.vm.exception.VMException;
 import org.aion.zero.impl.AionHub;
 import org.aion.zero.impl.config.CfgAion;
 import org.aion.zero.impl.tx.TxCollector;
-import org.aion.zero.impl.types.AionBlock;
 import org.aion.zero.types.AionTxReceipt;
 import org.slf4j.Logger;
 
@@ -38,7 +37,7 @@ public class AionImpl implements IAionChain {
     private static final Logger LOG_GEN = AionLoggerFactory.getLogger(LogEnum.GEN.toString());
     private static final Logger LOG_TX = AionLoggerFactory.getLogger(LogEnum.TX.toString());
     private static final Logger LOG_VM = AionLoggerFactory.getLogger(LogEnum.VM.toString());
-    private static final ECKey keyForCallandEstimate = ECKeyFac.inst().fromPrivate(new byte[64]);
+    static final ECKey keyForCallandEstimate = ECKeyFac.inst().fromPrivate(new byte[64]);
 
     public AionHub aionHub;
 
@@ -70,7 +69,7 @@ public class AionImpl implements IAionChain {
         return aionHub.getBlockchain();
     }
 
-    public synchronized ImportResult addNewMinedBlock(AionBlock block) {
+    public synchronized ImportResult addNewMinedBlock(Block block) {
         ImportResult importResult = this.aionHub.getBlockchain().tryToConnect(block);
 
         if (importResult == ImportResult.IMPORTED_BEST) {
