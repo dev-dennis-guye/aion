@@ -31,6 +31,7 @@ import org.aion.zero.impl.config.CfgAion;
 import org.aion.zero.impl.core.IAionBlockchain;
 import org.aion.zero.impl.db.AionRepositoryImpl;
 import org.aion.zero.impl.db.DBUtils;
+import org.aion.zero.impl.pos.AionPoS;
 import org.aion.zero.impl.pow.AionPoW;
 import org.aion.zero.impl.sync.SyncMgr;
 import org.aion.zero.impl.sync.handler.BlockPropagationHandler;
@@ -43,7 +44,6 @@ import org.aion.zero.impl.sync.handler.ResBlocksBodiesHandler;
 import org.aion.zero.impl.sync.handler.ResBlocksHeadersHandler;
 import org.aion.zero.impl.sync.handler.ResStatusHandler;
 import org.aion.zero.impl.types.AionBlock;
-import org.aion.zero.types.A0BlockHeader;
 import org.slf4j.Logger;
 
 public class AionHub {
@@ -70,6 +70,8 @@ public class AionHub {
     private IEventMgr eventMgr;
 
     private AionPoW pow;
+
+    private AionPoS pos;
 
     private AtomicBoolean start = new AtomicBoolean(true);
 
@@ -191,6 +193,7 @@ public class AionHub {
                         syncMgr.getSyncStats(),
                         p2pMgr,
                         chainConfig.createBlockHeaderValidator(),
+                        chainConfig.createStakingBlockHeaderValidator(),
                         cfg.getNet().getP2p().inSyncOnlyMode(),
                         apiVersion,
                         mempool);
@@ -205,6 +208,9 @@ public class AionHub {
 
         this.pow = new AionPoW();
         this.pow.init(_blockchain, mempool, eventMgr);
+
+        pos = new AionPoS();
+        pos.init(_blockchain, mempool, eventMgr);
     }
 
     static AionHub createForTesting(

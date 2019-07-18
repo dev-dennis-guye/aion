@@ -340,6 +340,7 @@ public class BlockPropagationTest {
                         syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
+                        anotherBundle.bc.getStakingBlockHeaderValidator(),
                         false,
                         (byte) 2,
                         AionPendingStateImpl.createForTesting(
@@ -408,6 +409,7 @@ public class BlockPropagationTest {
                         syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
+                        anotherBundle.bc.getStakingBlockHeaderValidator(),
                         false,
                         (byte) 2,
                         AionPendingStateImpl.createForTesting(
@@ -472,6 +474,7 @@ public class BlockPropagationTest {
                         syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
+                        anotherBundle.bc.getStakingBlockHeaderValidator(),
                         false,
                         (byte) 2,
                         AionPendingStateImpl.createForTesting(
@@ -531,6 +534,7 @@ public class BlockPropagationTest {
                         syncStats,
                         p2pMock,
                         anotherBundle.bc.getBlockHeaderValidator(),
+                        anotherBundle.bc.getStakingBlockHeaderValidator(),
                         false,
                         (byte) 2,
                         AionPendingStateImpl.createForTesting(
