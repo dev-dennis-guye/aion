@@ -1,6 +1,8 @@
 package org.aion.mcf.blockchain;
 
 import java.math.BigInteger;
+
+import org.aion.mcf.types.AbstractBlockHeader;
 import org.aion.types.AionAddress;
 
 /** @author jay */
@@ -56,5 +58,5 @@ public interface BlockHeader {
 
     long getEnergyLimit();
     
-    byte getSealType();
+    AbstractBlockHeader.BlockSealType getSealType();
 }

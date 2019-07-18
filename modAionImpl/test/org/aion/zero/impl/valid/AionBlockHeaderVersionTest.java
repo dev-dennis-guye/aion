@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import org.aion.mcf.blockchain.valid.IValidRule;
+import org.aion.mcf.types.AbstractBlockHeader;
 import org.aion.zero.types.A0BlockHeader;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class AionBlockHeaderVersionTest {
 
     @Test
     public void testSupportedVersion() {
-        when(mockHeader.getSealType()).thenReturn((byte) 1);
+        when(mockHeader.getSealType()).thenReturn(AbstractBlockHeader.BlockSealType.SEAL_POW_BLOCK);
 
         List<IValidRule.RuleError> errors = new ArrayList<>();
 
@@ -36,7 +37,7 @@ public class AionBlockHeaderVersionTest {
 
     @Test
     public void testUnsupportedVersion() {
-        when(mockHeader.getSealType()).thenReturn((byte) -1);
+        when(mockHeader.getSealType()).thenReturn(AbstractBlockHeader.BlockSealType.SEAL_NA);
 
         List<IValidRule.RuleError> errors = new ArrayList<>();
 
