@@ -31,7 +31,6 @@ import org.aion.log.AionLoggerFactory;
 import org.aion.log.LogEnum;
 import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.blockchain.BlockHeader;
-import org.aion.mcf.db.AbstractPowBlockstore;
 import org.aion.mcf.db.IBlockStoreBase;
 import org.aion.mcf.ds.DataSourceArray;
 import org.aion.mcf.ds.ObjectDataSource;
