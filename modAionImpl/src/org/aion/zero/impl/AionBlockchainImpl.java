@@ -52,6 +52,7 @@ import org.aion.mcf.trie.TrieImpl;
 import org.aion.mcf.trie.TrieNodeResult;
 import org.aion.mcf.types.BlockIdentifierImpl;
 import org.aion.mcf.valid.BlockHeaderValidator;
+import org.aion.mcf.valid.BlockNumberRule;
 import org.aion.mcf.valid.GrandParentBlockHeaderValidator;
 import org.aion.mcf.valid.ParentBlockHeaderValidator;
 import org.aion.mcf.valid.TransactionTypeRule;
@@ -126,6 +127,9 @@ public class AionBlockchainImpl implements IAionBlockchain {
     private final ParentBlockHeaderValidator parentStakingHeaderValidator;
     private final BlockHeaderValidator stakingBlockHeaderValidator;
 
+    private final ParentBlockHeaderValidator chainHeaderValidator;
+
+
     private StakingContractHelper stakingContractHelper;
     /**
      * Chain configuration class, because chain configuration may change dependant on the block
@@ -195,6 +199,8 @@ public class AionBlockchainImpl implements IAionBlockchain {
         grandParentStakingBlockHeaderValidator = chainConfig.createStakingGrandParentHeaderValidator();
         parentStakingHeaderValidator = chainConfig.createStakingParentHeaderValidator();
         stakingBlockHeaderValidator = chainConfig.createStakingBlockHeaderValidator();
+
+        chainHeaderValidator = chainConfig.createChainHeaderValidator();
 
         this.transactionStore = this.repository.getTransactionStore();
 
@@ -1325,6 +1331,10 @@ public class AionBlockchainImpl implements IAionBlockchain {
     }
 
     public boolean isValid(BlockHeader header) {
+
+        if (!chainHeaderValidator.validate(header, getBestBlock().getHeader(), LOG, null)) {
+            return false;
+        }
 
         if (header.getSealType() == 0x01) {
             /*
