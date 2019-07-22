@@ -1069,7 +1069,7 @@ public class AionNameServiceContractTest {
             accountNonce = accountNonce.add(BigInteger.ONE);
         }
 
-        AionBlock block = bc.createNewBlock(parentBlock, transactions, true);
+        AionBlock block = (AionBlock)bc.createNewBlock(parentBlock, transactions, true);
         Assert.assertEquals(100, block.getTransactionsList().size());
         // clear the trie
         bc.getRepository().flush();

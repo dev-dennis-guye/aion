@@ -21,6 +21,7 @@ import org.aion.mcf.blockchain.IPendingStateInternal;
 import org.aion.mcf.config.CfgNetP2p;
 import org.aion.mcf.db.IBlockStorePow;
 import org.aion.mcf.db.Repository;
+import org.aion.mcf.exceptions.HeaderStructureException;
 import org.aion.p2p.Handler;
 import org.aion.p2p.IP2pMgr;
 import org.aion.p2p.impl1.P2pMgr;
@@ -44,6 +45,7 @@ import org.aion.zero.impl.sync.handler.ResBlocksBodiesHandler;
 import org.aion.zero.impl.sync.handler.ResBlocksHeadersHandler;
 import org.aion.zero.impl.sync.handler.ResStatusHandler;
 import org.aion.zero.impl.types.AionBlock;
+import org.aion.zero.impl.types.StakingBlock;
 import org.slf4j.Logger;
 
 public class AionHub {
@@ -388,7 +390,7 @@ public class AionHub {
                                     .getTotalDifficultyForHash(bestBlock.getHash()));
 
                     startingBlock = bestBlock;
-                    // TODO: The publicbestblock is a weird settings, should consider to remove it.
+                    // TODO: [unity] The publicbestblock is a weird settings, should consider to remove it.
                     ((AionBlockchainImpl) blockchain).resetPubBestBlock(bestBlock);
                 } else {
                     genLOG.error(
@@ -438,13 +440,28 @@ public class AionHub {
                 genesis.setCumulativeDifficulty(genesis.getDifficultyBI());
             }
 
+            try {
+                blockchain.setBestStakingBlock(cfg.getGenesisStakingBlock());
+                genLOG.info("load genesis Staking block!");
+            } catch (HeaderStructureException e) {
+                throw new IllegalStateException(e);
+            }
+
             genLOG.info(
                     "loaded genesis block <num={}, root={}>",
                     0,
                     ByteUtil.toHexString(genesis.getStateRoot()));
-
         } else {
             blockchain.setBestBlock(bestBlock);
+            if (bestBlock instanceof StakingBlock) {
+                blockchain.loadBestMiningBlock();
+            } else if (bestBlock instanceof AionBlock) {
+                blockchain.loadBestStakingBlock();
+            } else {
+                throw new IllegalStateException();
+            }
+
+
             blockchain.setTotalDifficulty(this.repository.getBlockStore().getTotalDifficulty());
             if (bestBlock.getCumulativeDifficulty().equals(BigInteger.ZERO)) {
                 // setting the object runtime value

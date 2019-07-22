@@ -67,7 +67,6 @@ import org.aion.vm.exception.VMException;
 import org.aion.zero.impl.StandaloneBlockchain;
 import org.aion.zero.impl.StandaloneBlockchain.Builder;
 import org.aion.zero.impl.db.AionRepositoryCache;
-import org.aion.zero.impl.types.AionBlock;
 import org.aion.zero.impl.types.AionBlockSummary;
 import org.aion.zero.impl.vm.contracts.AvmHelloWorld;
 import org.aion.zero.impl.vm.contracts.ContractUtils;
@@ -166,7 +165,7 @@ public class ContractIntegTest {
         assertEquals(Builder.DEFAULT_BALANCE, blockchain.getRepository().getBalance(deployer));
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         RepositoryCache repo = blockchain.getRepository().startTracking();
 
         AionTxExecSummary summary =
@@ -230,7 +229,7 @@ public class ContractIntegTest {
         assertEquals(Builder.DEFAULT_BALANCE, blockchain.getRepository().getBalance(deployer));
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         RepositoryCache repo = blockchain.getRepository().startTracking();
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
@@ -281,7 +280,7 @@ public class ContractIntegTest {
         assertEquals(Builder.DEFAULT_BALANCE, blockchain.getRepository().getBalance(deployer));
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         RepositoryCache repo = blockchain.getRepository().startTracking();
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
@@ -333,7 +332,7 @@ public class ContractIntegTest {
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
         if (txType == TransactionTypes.DEFAULT) {
-            AionBlock block = makeBlock(tx);
+            Block block = makeBlock(tx);
             RepositoryCache repo = blockchain.getRepository().startTracking();
             AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
@@ -349,7 +348,7 @@ public class ContractIntegTest {
             assertNotNull(code);
         } else {
             blockchain.set040ForkNumber(0);
-            AionBlock block = makeBlock(tx);
+            Block block = makeBlock(tx);
             RepositoryCache repo = blockchain.getRepository().startTracking();
             AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
@@ -382,7 +381,7 @@ public class ContractIntegTest {
         assertEquals(Builder.DEFAULT_BALANCE, blockchain.getRepository().getBalance(deployer));
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         RepositoryCache repo = blockchain.getRepository().startTracking();
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         if (txType == TransactionTypes.DEFAULT) {
@@ -433,7 +432,7 @@ public class ContractIntegTest {
         assertEquals(Builder.DEFAULT_BALANCE, blockchain.getRepository().getBalance(deployer));
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         RepositoryCache repo = blockchain.getRepository().startTracking();
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
@@ -486,7 +485,7 @@ public class ContractIntegTest {
         assertEquals(Builder.DEFAULT_BALANCE, blockchain.getRepository().getBalance(deployer));
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         RepositoryCache repo = blockchain.getRepository().startTracking();
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
@@ -551,7 +550,7 @@ public class ContractIntegTest {
             tx.sign(deployerKey);
             assertFalse(tx.isContractCreationTransaction());
 
-            AionBlock block = makeBlock(tx);
+            Block block = makeBlock(tx);
             AionTxExecSummary summary = executeTransaction(tx, block, repo);
             assertEquals("", summary.getReceipt().getError());
             assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -608,7 +607,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -691,7 +690,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("REVERT", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -747,7 +746,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -807,7 +806,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -868,7 +867,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -947,7 +946,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -1036,7 +1035,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -1159,7 +1158,7 @@ public class ContractIntegTest {
         assertEquals(Builder.DEFAULT_BALANCE, blockchain.getRepository().getBalance(deployer));
         assertEquals(BigInteger.ZERO, blockchain.getRepository().getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
         if (txType == TransactionTypes.DEFAULT) {
@@ -1219,7 +1218,7 @@ public class ContractIntegTest {
 
         BigInteger senderBalance = repo.getBalance(deployer);
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         assertEquals("", summary.getReceipt().getError());
         assertEquals(tx.getNrgConsume(), summary.getNrgUsed().longValue());
@@ -1324,7 +1323,7 @@ public class ContractIntegTest {
         BigInteger senderBalance = repo.getBalance(deployer);
 
         Block parent = blockchain.getBestBlock();
-        AionBlock block = blockchain.createBlock(parent, ls, false, parent.getTimestamp());
+        Block block = blockchain.createBlock(parent, ls, false, parent.getTimestamp());
 
         Pair<ImportResult, AionBlockSummary> result = blockchain.tryToConnectAndFetchSummary(block);
         assertTrue(result.getLeft().isSuccessful());
@@ -1393,7 +1392,7 @@ public class ContractIntegTest {
         tx.sign(deployerKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
         // The evmjit only return the the transaction success or failed when performing the function
         // call.
@@ -1434,7 +1433,7 @@ public class ContractIntegTest {
         tx.sign(senderKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         assertEquals(1, block.getTransactionsList().size());
 
         Pair<ImportResult, AionBlockSummary> result = blockchain.tryToConnectAndFetchSummary(block);
@@ -1519,7 +1518,7 @@ public class ContractIntegTest {
         tx.sign(senderKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         assertEquals(1, block.getTransactionsList().size());
 
         Pair<ImportResult, AionBlockSummary> result = blockchain.tryToConnectAndFetchSummary(block);
@@ -1611,7 +1610,7 @@ public class ContractIntegTest {
         tx.sign(senderKey);
         assertFalse(tx.isContractCreationTransaction());
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         assertEquals(1, block.getTransactionsList().size());
 
         Pair<ImportResult, AionBlockSummary> result = blockchain.tryToConnectAndFetchSummary(block);
@@ -1770,7 +1769,7 @@ public class ContractIntegTest {
         assertEquals(deployerBalance, repo.getBalance(deployer));
         assertEquals(deployerNonce, repo.getNonce(deployer));
 
-        AionBlock block = makeBlock(tx);
+        Block block = makeBlock(tx);
         AionTxExecSummary summary = executeTransaction(tx, block, repo);
 
         if (!summary.getReceipt().getError().equals("")) {
@@ -1945,7 +1944,7 @@ public class ContractIntegTest {
                 block.getNumber() - 1);
     }
 
-    private AionBlock makeBlock(AionTransaction tx) {
+    private Block makeBlock(AionTransaction tx) {
         Block parent = blockchain.getBestBlock();
         return blockchain.createBlock(
                 parent, Collections.singletonList(tx), false, parent.getTimestamp());
@@ -1976,7 +1975,7 @@ public class ContractIntegTest {
 
         transaction.sign(this.deployerKey);
 
-        AionBlock block =
+        Block block =
                 this.blockchain.createNewBlock(
                         this.blockchain.getBestBlock(),
                         Collections.singletonList(transaction),

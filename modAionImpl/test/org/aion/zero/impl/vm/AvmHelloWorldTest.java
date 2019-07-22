@@ -13,12 +13,12 @@ import org.aion.base.AionTransaction;
 import org.aion.base.TransactionTypes;
 import org.aion.crypto.AddressSpecs;
 import org.aion.crypto.ECKey;
+import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.core.ImportResult;
 import org.aion.mcf.valid.TransactionTypeRule;
 import org.aion.types.AionAddress;
 import org.aion.vm.LongLivedAvm;
 import org.aion.zero.impl.StandaloneBlockchain;
-import org.aion.zero.impl.types.AionBlock;
 import org.aion.zero.impl.types.AionBlockSummary;
 import org.aion.zero.impl.vm.contracts.AvmHelloWorld;
 import org.aion.zero.types.AionTxReceipt;
@@ -77,7 +77,7 @@ public class AvmHelloWorldTest {
 
         transaction.sign(this.deployerKey);
 
-        AionBlock block =
+        Block block =
                 this.blockchain.createNewBlock(
                         this.blockchain.getBestBlock(),
                         Collections.singletonList(transaction),
@@ -111,7 +111,7 @@ public class AvmHelloWorldTest {
                         TransactionTypes.AVM_CREATE_CODE);
         transaction.sign(this.deployerKey);
 
-        AionBlock block =
+        Block block =
                 this.blockchain.createNewBlock(
                         this.blockchain.getBestBlock(),
                         Collections.singletonList(transaction),
@@ -183,7 +183,7 @@ public class AvmHelloWorldTest {
 
         ls.add(transaction2);
 
-        AionBlock block = this.blockchain.createNewBlock(this.blockchain.getBestBlock(), ls, false);
+        Block block = this.blockchain.createNewBlock(this.blockchain.getBestBlock(), ls, false);
         Pair<ImportResult, AionBlockSummary> connectResult =
                 this.blockchain.tryToConnectAndFetchSummary(block);
 

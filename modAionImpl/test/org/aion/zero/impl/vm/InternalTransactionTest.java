@@ -48,7 +48,6 @@ import org.aion.vm.LongLivedAvm;
 import org.aion.vm.exception.VMException;
 import org.aion.zero.impl.BlockContext;
 import org.aion.zero.impl.StandaloneBlockchain;
-import org.aion.zero.impl.types.AionBlock;
 import org.aion.zero.impl.types.AionBlockSummary;
 import org.aion.zero.impl.types.AionTxInfo;
 import org.aion.zero.types.AionTxExecSummary;
@@ -377,7 +376,7 @@ public class InternalTransactionTest {
 
         Block parentBlock = bc.getBestBlock();
 
-        AionBlock newBlock =
+        Block newBlock =
                 bc.createBlock(
                         parentBlock,
                         Collections.singletonList(tx),
@@ -470,7 +469,7 @@ public class InternalTransactionTest {
             throws VMException {
         RepositoryCache cache = bc.getRepository().startTracking();
 
-        AionBlock block = context.block;
+        Block block = context.block;
         AionTxExecSummary summary =
                 BulkExecutor.executeTransactionWithNoPostExecutionWork(
                         block.getDifficulty(),

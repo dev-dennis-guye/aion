@@ -86,8 +86,8 @@ public class BlockchainForkingTest {
         StandaloneBlockchain.Bundle b = builder.withValidatorConfiguration("simple").build();
 
         StandaloneBlockchain bc = b.bc;
-        AionBlock block = bc.createNewBlock(bc.getBestBlock(), Collections.emptyList(), true);
-        AionBlock sameBlock = new AionBlock(block.getEncoded());
+        Block block = bc.createNewBlock(bc.getBestBlock(), Collections.emptyList(), true);
+        Block sameBlock = new AionBlock(block.getEncoded());
 
         ImportResult firstRes = bc.tryToConnect(block);
 
@@ -140,10 +140,10 @@ public class BlockchainForkingTest {
         StandaloneBlockchain bc = b.bc;
         Block bestBlock = bc.getBestBlock();
         AionBlock standardBlock =
-                bc.createNewBlock(bc.getBestBlock(), Collections.emptyList(), true);
+            (AionBlock) bc.createNewBlock(bc.getBestBlock(), Collections.emptyList(), true);
 
         ChainConfiguration cc = new ChainConfiguration();
-        AionBlock higherDifficultyBlock = new AionBlock(standardBlock);
+        Block higherDifficultyBlock = new AionBlock(standardBlock);
         higherDifficultyBlock.getHeader().setTimestamp(bestBlock.getTimestamp() + 1);
 
         BigInteger difficulty =
@@ -263,7 +263,7 @@ public class BlockchainForkingTest {
         // generate three blocks, on the third block we get flexibility
         // for what difficulties can occur
 
-        AionBlock firstBlock =
+        Block firstBlock =
                 bc.createNewBlockInternal(
                                 bc.getGenesis(), Collections.emptyList(), true, time / 1000L)
                         .block;
@@ -276,7 +276,7 @@ public class BlockchainForkingTest {
         assertThat(cacheContext.getRight()).isEqualTo(BlockCachingContext.MAINCHAIN);
 
         // now connect the second block
-        AionBlock secondBlock =
+        Block secondBlock =
                 bc.createNewBlockInternal(firstBlock, Collections.emptyList(), true, time / 1000L)
                         .block;
         assertThat(bc.tryToConnectInternal(secondBlock, time += 10))
@@ -291,7 +291,7 @@ public class BlockchainForkingTest {
         AionBlock fasterSecondBlock =
                 bc.createNewBlockInternal(secondBlock, Collections.emptyList(), true, time / 1000L)
                         .block;
-        AionBlock slowerSecondBlock = new AionBlock(fasterSecondBlock);
+        Block slowerSecondBlock = new AionBlock(fasterSecondBlock);
 
         slowerSecondBlock.getHeader().setTimestamp(time / 1000L + 100);
 
@@ -327,11 +327,11 @@ public class BlockchainForkingTest {
 
         time += 100;
 
-        AionBlock fastBlockDescendant =
+        Block fastBlockDescendant =
                 bc.createNewBlockInternal(
                                 fasterSecondBlock, Collections.emptyList(), true, time / 1000L)
                         .block;
-        AionBlock slowerBlockDescendant =
+        Block slowerBlockDescendant =
                 bc.createNewBlockInternal(
                                 slowerSecondBlock,
                                 Collections.emptyList(),
@@ -368,7 +368,7 @@ public class BlockchainForkingTest {
         assertThat(bc.getBestBlock()).isEqualTo(fastBlockDescendant);
 
         // ensuring that the caching is correct for the nest block to be added
-        AionBlock switchBlock =
+        Block switchBlock =
                 bc.createNewBlockInternal(
                                 fastBlockDescendant, Collections.emptyList(), true, time / 1000L)
                         .block;
@@ -382,7 +382,7 @@ public class BlockchainForkingTest {
         assertThat(cacheContext.getRight()).isEqualTo(BlockCachingContext.SWITCHING_MAINCHAIN);
 
         // ensuring that the caching is correct for the nest block to be added
-        AionBlock lastBlock =
+        Block lastBlock =
                 bc.createNewBlockInternal(switchBlock, Collections.emptyList(), true, time / 1000L)
                         .block;
 
@@ -425,7 +425,7 @@ public class BlockchainForkingTest {
         BlockContext fasterSecondBlock =
                 bc.createNewBlockInternal(
                         secondBlock.block, Collections.emptyList(), true, time / 1000L);
-        AionBlock slowerSecondBlock = new AionBlock(fasterSecondBlock.block);
+        Block slowerSecondBlock = new AionBlock(fasterSecondBlock.block);
 
         slowerSecondBlock.getHeader().setTimestamp(time / 1000L + 100);
 
@@ -482,14 +482,14 @@ public class BlockchainForkingTest {
         StandaloneBlockchain.Builder builder = new StandaloneBlockchain.Builder();
         StandaloneBlockchain.Bundle b = builder.withValidatorConfiguration("simple").build();
         StandaloneBlockchain bc = b.bc;
-        AionBlock block = bc.createNewBlock(bc.getBestBlock(), Collections.emptyList(), true);
+        Block block = bc.createNewBlock(bc.getBestBlock(), Collections.emptyList(), true);
 
         assertThat(bc.tryToConnect(block)).isEqualTo(ImportResult.IMPORTED_BEST);
 
         // check that the returned block is the first block
         assertThat(bc.getBestBlock() == block).isTrue();
 
-        AionBlock invalidBlock =
+        Block invalidBlock =
                 bc.createNewBlock(bc.getBestBlock(), Collections.emptyList(), true);
         invalidBlock.getHeader().setDifficulty(BigInteger.ONE.toByteArray());
 
@@ -541,7 +541,7 @@ public class BlockchainForkingTest {
         ECKey sender = accounts.remove(0);
         AionTransaction deployTx = deployContract(sender);
 
-        AionBlock block =
+        Block block =
                 sourceChain.createNewBlockInternal(
                                 sourceChain.genesis, Arrays.asList(deployTx), true, time / 10_000L)
                         .block;
@@ -580,7 +580,7 @@ public class BlockchainForkingTest {
 
         // create a slow / fast block distinction
         AionTransaction callTx = callSetValue2(sender, contract, 5, 6, BigInteger.ONE);
-        AionBlock fastBlock =
+        Block fastBlock =
                 sourceChain.createNewBlockInternal(
                                 sourceChain.getBestBlock(),
                                 Arrays.asList(callTx),
@@ -589,7 +589,7 @@ public class BlockchainForkingTest {
                         .block;
 
         callTx = callSetValue2(sender, contract, 1, 9, BigInteger.ONE);
-        AionBlock slowBlock =
+        Block slowBlock =
                 new AionBlock(
                         sourceChain.createNewBlockInternal(
                                         sourceChain.getBestBlock(),
@@ -616,13 +616,13 @@ public class BlockchainForkingTest {
         // the second block gets a higher total difficulty
         callTx = callSetValue(sender, contract, 5, BigInteger.TWO);
 
-        AionBlock lowBlock =
+        Block lowBlock =
                 testChain.createNewBlockInternal(
                                 slowBlock, Arrays.asList(callTx), true, time / 10_000L + 101)
                         .block;
 
         callTx = callSetValue(sender, contract, 9, BigInteger.TWO);
-        AionBlock highBlock =
+        Block highBlock =
                 sourceChain.createNewBlockInternal(
                                 fastBlock, Arrays.asList(callTx), true, time / 10_000L)
                         .block;

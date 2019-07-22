@@ -11,13 +11,13 @@ import org.aion.avm.userlib.abi.ABIEncoder;
 import org.aion.base.AionTransaction;
 import org.aion.base.TransactionTypes;
 import org.aion.crypto.ECKey;
+import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.blockchain.TxResponse;
 import org.aion.mcf.core.ImportResult;
 import org.aion.mcf.valid.TransactionTypeRule;
 import org.aion.types.AionAddress;
 import org.aion.vm.LongLivedAvm;
 import org.aion.zero.impl.config.CfgAion;
-import org.aion.zero.impl.types.AionBlock;
 import org.aion.zero.impl.types.AionBlockSummary;
 import org.aion.zero.impl.vm.contracts.AvmHelloWorld;
 import org.aion.zero.types.AionTxReceipt;
@@ -176,7 +176,7 @@ public class PendingStateTest {
                         TransactionTypes.AVM_CREATE_CODE);
         transaction.sign(deployerKey);
 
-        AionBlock block =
+        Block block =
                 blockchain.createNewBlock(
                         blockchain.getBestBlock(), Collections.singletonList(transaction), false);
         Pair<ImportResult, AionBlockSummary> connectResult =
