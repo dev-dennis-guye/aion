@@ -933,7 +933,7 @@ public class AionAuctionContractTest {
             accountNonce = accountNonce.add(BigInteger.ONE);
         }
 
-        AionBlock block = (AionBlock)bc.createNewBlock(parentBlock, transactions, true);
+        AionBlock block = (AionBlock) bc.createNewBlock(parentBlock, transactions, true);
         assertEquals(100, block.getTransactionsList().size());
         // clear the trie
         bc.getRepository().flush();

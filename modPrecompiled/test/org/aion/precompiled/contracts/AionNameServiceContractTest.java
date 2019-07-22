@@ -19,6 +19,7 @@ import org.aion.crypto.ISignature;
 import org.aion.crypto.ed25519.ECKeyEd25519;
 import org.aion.db.impl.DBVendor;
 import org.aion.db.impl.DatabaseFactory;
+import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.config.CfgPrune;
 import org.aion.mcf.core.AccountState;
 import org.aion.mcf.core.IBlockchain;
@@ -1069,7 +1070,7 @@ public class AionNameServiceContractTest {
             accountNonce = accountNonce.add(BigInteger.ONE);
         }
 
-        AionBlock block = (AionBlock)bc.createNewBlock(parentBlock, transactions, true);
+        AionBlock block = (AionBlock) bc.createNewBlock(parentBlock, transactions, true);
         Assert.assertEquals(100, block.getTransactionsList().size());
         // clear the trie
         bc.getRepository().flush();
