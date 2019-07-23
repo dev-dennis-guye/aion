@@ -27,6 +27,7 @@ import org.aion.log.LogEnum;
 import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.blockchain.BlockHeader;
 import org.aion.mcf.config.StatsType;
+import org.aion.mcf.types.AbstractBlockHeader.BlockSealType;
 import org.aion.mcf.valid.BlockHeaderValidator;
 import org.aion.p2p.IP2pMgr;
 import org.aion.util.bytes.ByteUtil;
@@ -35,7 +36,9 @@ import org.aion.util.types.ByteArrayWrapper;
 import org.aion.zero.impl.AionBlockchainImpl;
 import org.aion.zero.impl.blockchain.ChainConfiguration;
 import org.aion.zero.impl.types.AionBlock;
+import org.aion.zero.impl.types.StakingBlock;
 import org.aion.zero.types.A0BlockHeader;
+import org.aion.zero.types.StakedBlockHeader;
 import org.apache.commons.collections4.map.LRUMap;
 import org.slf4j.Logger;
 
@@ -83,7 +86,8 @@ public final class SyncMgr {
     private Thread syncGs = null;
     private Thread syncSs = null;
 
-    private BlockHeaderValidator blockHeaderValidator;
+    private BlockHeaderValidator miningBlockHeaderValidator;
+    private BlockHeaderValidator stakingBlockHeaderValidator;
     private volatile long timeUpdated = 0;
     private AtomicBoolean queueFull = new AtomicBoolean(false);
 
@@ -179,7 +183,8 @@ public final class SyncMgr {
 
         blocksQueueMax = _blocksQueueMax;
 
-        blockHeaderValidator = new ChainConfiguration().createBlockHeaderValidator();
+        miningBlockHeaderValidator = new ChainConfiguration().createBlockHeaderValidator();
+        stakingBlockHeaderValidator = new ChainConfiguration().createStakingBlockHeaderValidator();
 
         long selfBest = chain.getBestBlock().getNumber();
         stats = new SyncStats(selfBest, _showStatus, showStatistics, maxActivePeers);
@@ -283,15 +288,32 @@ public final class SyncMgr {
         BlockHeader prev = null;
         for (BlockHeader current : _headers) {
 
-            // ignore this batch if any invalidated header
-            if (!this.blockHeaderValidator.validate(current, log)) {
-                log.debug(
-                        "<invalid-header num={} hash={}>", current.getNumber(), current.getHash());
+            if (current instanceof A0BlockHeader) {
+                // ignore this batch if any invalidated header
+                if (!this.miningBlockHeaderValidator.validate(current, log)) {
+                    log.debug(
+                            "<invalid-header num={} hash={}>",
+                            current.getNumber(),
+                            current.getHash());
 
-                // Print header to allow debugging
-                log.debug("Invalid header: {}", current.toString());
+                    // Print header to allow debugging
+                    log.debug("Invalid header: {}", current.toString());
 
-                return;
+                    return;
+                }
+            } else if (current instanceof StakedBlockHeader) {
+                // ignore this batch if any invalidated header
+                if (!this.stakingBlockHeaderValidator.validate(current, log)) {
+                    log.debug(
+                        "<invalid-header num={} hash={}>",
+                        current.getNumber(),
+                        current.getHash());
+
+                    // Print header to allow debugging
+                    log.debug("Invalid header: {}", current.toString());
+
+                    return;
+                }
             }
 
             // break if not consisting
@@ -343,7 +365,14 @@ public final class SyncMgr {
         Iterator<BlockHeader> headerIt = headers.iterator();
         Iterator<byte[]> bodyIt = _bodies.iterator();
         while (headerIt.hasNext() && bodyIt.hasNext()) {
-            AionBlock block = AionBlock.createBlockFromNetwork(headerIt.next(), bodyIt.next());
+            BlockHeader header = headerIt.next();
+            Block block = null;
+            if (header.getSealType() == BlockSealType.SEAL_POW_BLOCK.ordinal()) {
+                block = AionBlock.createBlockFromNetwork(header, bodyIt.next());
+            } else if (header.getSealType() == BlockSealType.SEAL_POS_BLOCK.ordinal()) {
+                block = StakingBlock.createBlockFromNetwork((StakedBlockHeader) header, bodyIt.next());
+            }
+
             if (block == null) {
                 log.error("<assemble-and-validate-blocks node={}>", _displayId);
                 break;
