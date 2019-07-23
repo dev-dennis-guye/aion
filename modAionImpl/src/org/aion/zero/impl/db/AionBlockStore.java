@@ -169,7 +169,8 @@ public class AionBlockStore extends AbstractPowBlockstore {
         try {
 
             if (!block.getHeader().isGenesis()) {
-                Block parent = blocks.get(block.getParentHash());
+                //Block parent = blocks.get(block.getParentHash());
+                Block parent = getBlockWithAntiParentByHash(block.getHeader().getParentHash());
                 // TODO : [unity] fix the aionblockstore test suite.
                 if (parent != null) {
                     if (block.getHeader().getSealType() == parent.getHeader().getSealType()) {
@@ -463,6 +464,30 @@ public class AionBlockStore extends AbstractPowBlockstore {
         lock.readLock().lock();
         try {
             return blocks.get(hash);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public Block getBlockWithAntiParentByHash(byte[] hash) {
+        lock.readLock().lock();
+        try {
+
+            Block block = blocks.get(hash);
+            if (block == null) {
+                return null;
+            }
+
+            List<BlockInfo> bi = index.get(block.getNumber());
+            if (bi != null) {
+                for (BlockInfo b : bi) {
+                    if (Arrays.equals(b.getHash(), block.getHash())) {
+                        block.setAntiparentHash(b.getSealAntiparentHash());
+                    }
+                }
+            }
+            return block;
         } finally {
             lock.readLock().unlock();
         }

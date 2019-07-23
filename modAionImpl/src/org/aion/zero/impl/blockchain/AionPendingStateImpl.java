@@ -65,7 +65,7 @@ import org.aion.zero.types.AionTxExecSummary;
 import org.aion.zero.types.AionTxReceipt;
 import org.slf4j.Logger;
 
-public class AionPendingStateImpl implements IPendingStateInternal<AionBlock> {
+public class AionPendingStateImpl implements IPendingStateInternal<Block> {
 
     private static final Logger LOGGER_TX = AionLoggerFactory.getLogger(LogEnum.TX.toString());
     private static final Logger LOGGER_VM = AionLoggerFactory.getLogger(LogEnum.VM.toString());
@@ -214,7 +214,7 @@ public class AionPendingStateImpl implements IPendingStateInternal<AionBlock> {
                 if (e.getEventType() == IHandler.TYPE.BLOCK0.getValue()
                         && e.getCallbackType() == EventBlock.CALLBACK.ONBEST0.getValue()) {
                     long t1 = System.currentTimeMillis();
-                    processBest((AionBlock) e.getFuncArgs().get(0), (List) e.getFuncArgs().get(1));
+                    processBest((Block) e.getFuncArgs().get(0), (List) e.getFuncArgs().get(1));
 
                     if (LOGGER_TX.isDebugEnabled()) {
                         long t2 = System.currentTimeMillis();
@@ -806,7 +806,7 @@ public class AionPendingStateImpl implements IPendingStateInternal<AionBlock> {
     }
 
     @Override
-    public synchronized void processBest(AionBlock newBlock, List receipts) {
+    public synchronized void processBest(Block newBlock, List receipts) {
 
         if (isSeed) {
             // seed mode doesn't need to update the pendingState
