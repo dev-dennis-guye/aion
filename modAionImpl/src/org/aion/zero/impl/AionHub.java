@@ -384,10 +384,10 @@ public class AionHub {
                 // new best block after recovery
                 bestBlock = this.repository.getBlockStore().getBestBlock();
                 if (bestBlock != null) {
-                    bestBlock.setCumulativeDifficulty(
-                            repository
-                                    .getBlockStore()
-                                    .getTotalDifficultyForHash(bestBlock.getHash()));
+                    Block blockWithDifficulties = getBlockStore().getBlockByHashWithInfo(bestBlock.getHash());
+                    bestBlock.setMiningDifficulty(blockWithDifficulties.getMiningDifficulty());
+                    bestBlock.setStakingDifficulty(blockWithDifficulties.getStakingDifficulty());
+                    bestBlock.setCumulativeDifficulty(blockWithDifficulties.getCumulativeDifficulty());
 
                     startingBlock = bestBlock;
                     // TODO: [unity] The publicbestblock is a weird settings, should consider to remove it.
@@ -434,7 +434,11 @@ public class AionHub {
             AionHubUtils.buildGenesis(genesis, repository);
 
             blockchain.setBestBlock(genesis);
+            
+            blockchain.setTotalMiningDifficulty(genesis.getMiningDifficulty());
+            blockchain.setTotalStakingDifficulty(genesis.getStakingDifficulty());
             blockchain.setTotalDifficulty(genesis.getDifficultyBI());
+            
             if (genesis.getCumulativeDifficulty().equals(BigInteger.ZERO)) {
                 // setting the object runtime value
                 genesis.setCumulativeDifficulty(genesis.getDifficultyBI());
@@ -462,11 +466,16 @@ public class AionHub {
             }
 
 
-            blockchain.setTotalDifficulty(this.repository.getBlockStore().getTotalDifficulty());
+            Block blockWithDifficulties = getBlockStore().getBestBlockWithInfo();
+            blockchain.setTotalMiningDifficulty(blockWithDifficulties.getMiningDifficulty());
+            blockchain.setTotalStakingDifficulty(blockWithDifficulties.getStakingDifficulty());
+            blockchain.setTotalDifficulty(blockWithDifficulties.getCumulativeDifficulty());
+
             if (bestBlock.getCumulativeDifficulty().equals(BigInteger.ZERO)) {
                 // setting the object runtime value
-                bestBlock.setCumulativeDifficulty(
-                        this.repository.getBlockStore().getTotalDifficulty());
+                bestBlock.setMiningDifficulty(blockWithDifficulties.getMiningDifficulty());
+                bestBlock.setStakingDifficulty(blockWithDifficulties.getStakingDifficulty());
+                bestBlock.setCumulativeDifficulty(blockWithDifficulties.getCumulativeDifficulty());
             }
 
             genLOG.info(

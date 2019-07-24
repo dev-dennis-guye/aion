@@ -94,6 +94,10 @@ public interface IBlockchain<TR extends AbstractTxReceipt,
 
     void close();
 
+    void setTotalMiningDifficulty(BigInteger miningDifficulty);
+    
+    void setTotalStakingDifficulty(BigInteger stakingDifficulty);
+    
     void setTotalDifficulty(BigInteger totalDifficulty);
 
     byte[] getBestBlockHash();

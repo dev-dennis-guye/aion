@@ -257,8 +257,8 @@ public class AionBlockStoreTest {
                         1);
         AionBlockStore store = new AionBlockStore(index, blocks, false);
 
-        store.saveBlock(blk1, BigInteger.TEN, true);
-        store.saveBlock(blk2, BigInteger.TEN.add(BigInteger.ONE), true);
+        store.saveBlock(blk1, BigInteger.TEN, BigInteger.TEN, true);
+        store.saveBlock(blk2, BigInteger.TEN.add(BigInteger.ONE), BigInteger.TEN, true);
 
         store.rollback(1);
 

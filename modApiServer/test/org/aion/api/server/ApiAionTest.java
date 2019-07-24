@@ -209,7 +209,7 @@ public class ApiAionTest {
         // retrieving genesis block's difficulty
         assertEquals(
                 api.getBlockWithTotalDifficulty(0).getValue(),
-                CfgAion.inst().getGenesis().getDifficultyBI());
+                CfgAion.inst().getGenesis().getCumulativeDifficulty());
     }
 
     /**
