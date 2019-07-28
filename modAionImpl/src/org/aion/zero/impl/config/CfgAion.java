@@ -108,7 +108,9 @@ public final class CfgAion extends Cfg {
             setGenesis();
         }
 
-        genesisStakingBlock = new GenesisStakingBlock(genesis.getExtraData());
+        if(genesisStakingBlock == null) {
+            genesisStakingBlock = new GenesisStakingBlock(genesis.getExtraData());
+        }
 
         return genesisStakingBlock;
     }
