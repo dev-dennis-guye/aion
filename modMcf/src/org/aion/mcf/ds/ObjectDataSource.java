@@ -15,7 +15,7 @@ public class ObjectDataSource<V> implements Flushable, Closeable {
     private ByteArrayKeyValueDatabase src;
     private Serializer<V, byte[]> serializer;
 
-    public ObjectDataSource(ByteArrayKeyValueDatabase src, Serializer<V, byte[]> serializer) {
+    ObjectDataSource(ByteArrayKeyValueDatabase src, Serializer<V, byte[]> serializer) {
         this.src = src;
         this.serializer = serializer;
     }

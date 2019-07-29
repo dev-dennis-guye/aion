@@ -12,6 +12,7 @@ import org.aion.db.impl.ByteArrayKeyValueDatabase;
 import org.aion.log.AionLoggerFactory;
 import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.core.ImportResult;
+import org.aion.mcf.ds.DataSource;
 import org.aion.mcf.ds.DataSourceArray;
 import org.aion.mcf.ds.ObjectDataSource;
 import org.aion.util.bytes.ByteUtil;
@@ -153,7 +154,7 @@ public class BlockchainIndexIntegrityTest {
 
         // corrupting the index at level 2
         DataSourceArray<List<AionBlockStore.BlockInfo>> index =
-                new DataSourceArray<>(new ObjectDataSource<>(indexDatabase, BLOCK_INFO_SERIALIZER));
+                new DataSource<>(indexDatabase, BLOCK_INFO_SERIALIZER).buildArraySource();
         List<AionBlockStore.BlockInfo> infos = index.get(2);
         assertThat(infos.size()).isEqualTo(2);
 

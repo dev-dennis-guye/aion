@@ -65,10 +65,15 @@ public class AionBlockStore extends AbstractPowBlockstore {
     }
 
     public AionBlockStore(ByteArrayKeyValueDatabase index, ByteArrayKeyValueDatabase blocks, boolean checkIntegrity, int blockCacheSize) {
-        this.index = new DataSourceArray<>(new ObjectDataSource(index, BLOCK_INFO_SERIALIZER));
+        this.index =
+                new DataSource(index, BLOCK_INFO_SERIALIZER)
+                        .withCache(10, Type.LRU)
+                        .withStatistics()
+                        .buildArraySource();
         this.blocks =
                 new DataSource<>(blocks, BLOCK_SERIALIZER)
                         .withCache(blockCacheSize, Type.LRU)
+                        .withStatistics()
                         .buildObjectSource();
         this.checkIntegrity = checkIntegrity;
     }

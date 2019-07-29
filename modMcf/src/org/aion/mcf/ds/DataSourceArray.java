@@ -17,7 +17,7 @@ public class DataSourceArray<V> implements Flushable, Closeable {
     private static final byte[] sizeKey = Hex.decode("FFFFFFFFFFFFFFFF");
     private long size = -1L;
 
-    public DataSourceArray(ObjectDataSource<V> src) {
+    DataSourceArray(ObjectDataSource<V> src) {
         this.src = src;
     }
 

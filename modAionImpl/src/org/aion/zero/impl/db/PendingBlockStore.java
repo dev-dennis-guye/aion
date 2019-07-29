@@ -30,6 +30,8 @@ import org.aion.log.LogEnum;
 import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.db.Flushable;
 import org.aion.mcf.db.exception.InvalidFilePathException;
+import org.aion.mcf.ds.DataSource;
+import org.aion.mcf.ds.DataSource.Type;
 import org.aion.mcf.ds.ObjectDataSource;
 import org.aion.mcf.ds.Serializer;
 import org.aion.rlp.RLP;
@@ -136,7 +138,11 @@ public class PendingBlockStore implements Flushable, Closeable {
         if (levelDatabase == null || levelDatabase.isClosed()) {
             throw newException(LEVEL_DB_NAME, props);
         }
-        this.levelSource = new ObjectDataSource<>(levelDatabase, HASH_LIST_RLP_SERIALIZER);
+        this.levelSource =
+                new DataSource<>(levelDatabase, HASH_LIST_RLP_SERIALIZER)
+                        .withCache(10, Type.LRU)
+                        .withStatistics()
+                        .buildObjectSource();
 
         // create the queue source
         props.setProperty(Props.DB_NAME, QUEUE_DB_NAME);
@@ -144,7 +150,11 @@ public class PendingBlockStore implements Flushable, Closeable {
         if (queueDatabase == null || queueDatabase.isClosed()) {
             throw newException(QUEUE_DB_NAME, props);
         }
-        this.queueSource = new ObjectDataSource<>(queueDatabase, BLOCK_LIST_RLP_SERIALIZER);
+        this.queueSource =
+                new DataSource<>(queueDatabase, BLOCK_LIST_RLP_SERIALIZER)
+                        .withCache(10, Type.LRU)
+                        .withStatistics()
+                        .buildObjectSource();
 
         // create the index source
         props.setProperty(Props.DB_NAME, INDEX_DB_NAME);

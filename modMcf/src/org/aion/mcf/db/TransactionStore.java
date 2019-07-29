@@ -10,6 +10,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.aion.db.impl.ByteArrayKeyValueDatabase;
 import org.aion.mcf.core.AbstractTxInfo;
+import org.aion.mcf.ds.DataSource;
+import org.aion.mcf.ds.DataSource.Type;
 import org.aion.mcf.ds.ObjectDataSource;
 import org.aion.mcf.ds.Serializer;
 import org.aion.mcf.types.AbstractTxReceipt;
@@ -25,7 +27,11 @@ public class TransactionStore<TXR extends AbstractTxReceipt, INFO extends Abstra
 
     public TransactionStore(
             ByteArrayKeyValueDatabase src, Serializer<List<INFO>, byte[]> serializer) {
-        source = new ObjectDataSource(src, serializer);
+        source =
+                new DataSource<>(src, serializer)
+                        .withCache(10, DataSource.Type.LRU)
+                        .withStatistics()
+                        .buildObjectSource();
     }
 
     public boolean putToBatch(INFO tx) {
