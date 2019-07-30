@@ -26,6 +26,7 @@ module aion.apiserver {
     requires jackson.core;
     requires jackson.databind;
     requires RpcGenerator;
+    requires java.sql;
 
     exports org.aion.api.server.pb;
     exports org.aion.api.server.zmq;
