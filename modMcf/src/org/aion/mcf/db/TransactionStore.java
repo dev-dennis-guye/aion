@@ -29,7 +29,7 @@ public class TransactionStore<TXR extends AbstractTxReceipt, INFO extends Abstra
             ByteArrayKeyValueDatabase src, Serializer<List<INFO>, byte[]> serializer) {
         source =
                 new DataSource<>(src, serializer)
-                        .withCache(10, DataSource.Type.LRU)
+                        .withCache(100, Type.Window_TinyLfu)
                         .withStatistics()
                         .buildObjectSource();
     }
