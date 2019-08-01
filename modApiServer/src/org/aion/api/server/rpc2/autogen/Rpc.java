@@ -22,5 +22,4 @@ public interface Rpc {
         byte[] var0,
         byte[] var1
     );
-
 }

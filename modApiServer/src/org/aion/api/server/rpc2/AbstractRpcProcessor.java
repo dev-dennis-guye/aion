@@ -1,6 +1,5 @@
 package org.aion.api.server.rpc2;
 
-import java.io.IOException;
 import org.aion.api.serialization.JsonRpcRequest;
 import org.aion.api.serialization.JsonRpcResponse;
 import org.aion.api.serialization.RequestDeserializer;

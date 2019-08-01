@@ -20,7 +20,7 @@ public class Rpc2Shim {
     private AbstractRpcProcessor rpc = new RpcProcessor2(new RpcImpl(AionImpl.inst()));
 
     public static final List<String> SUPPORTED_METHOD_NAMES = List.of(
-        "getseed", "submitseed", "submitwork"
+        "getseed", "submitseed", "submitsignature"
     );
 
     public static boolean supportsMethod(String methodName) {
