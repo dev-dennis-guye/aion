@@ -5,7 +5,7 @@ import java.util.List;
 import org.aion.base.AionTransaction;
 import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.blockchain.IChainInstancePOW;
-import org.aion.mcf.blockchain.IPowChain;
+import org.aion.mcf.blockchain.UnityChain;
 import org.aion.mcf.db.Repository;
 import org.aion.types.AionAddress;
 import org.aion.zero.impl.AionHub;
@@ -15,9 +15,9 @@ import org.aion.zero.types.AionTxReceipt;
 /** Aion chain interface. */
 public interface IAionChain extends IChainInstancePOW, QueryInterface {
 
-    IPowChain getBlockchain();
+    UnityChain getBlockchain();
 
-    void close();
+    void close() throws InterruptedException;
 
     AionTransaction createTransaction(
             BigInteger nonce, AionAddress to, BigInteger value, byte[] data);

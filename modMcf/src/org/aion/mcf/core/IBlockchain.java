@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import org.aion.mcf.blockchain.Block;
 import org.aion.mcf.blockchain.BlockHeader;
-import org.aion.mcf.blockchain.IPowChain;
+import org.aion.mcf.blockchain.UnityChain;
 import org.aion.mcf.types.AbstractBlockSummary;
 import org.aion.mcf.types.AbstractTxReceipt;
 import org.aion.types.AionAddress;
@@ -20,7 +20,7 @@ import org.aion.util.types.ByteArrayWrapper;
 @SuppressWarnings("rawtypes")
 public interface IBlockchain<TR extends AbstractTxReceipt,
                 INFO extends AbstractTxInfo>
-        extends IPowChain {
+        extends UnityChain {
 
     long getSize();
 

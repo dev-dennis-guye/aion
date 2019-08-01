@@ -117,5 +117,7 @@ public interface IAionBlockchain
 
     void loadBestStakingBlock();
 
+    boolean isUnityForkEnabled();
 
+    StakingBlock trySealStakingBlock();
 }
